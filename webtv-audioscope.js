@@ -58,6 +58,7 @@ class WebTVAudioscope extends HTMLElement {
         requestAnimationFrame(this.draw.bind(this));
         this.paintBackground();
         //this.drawLine(this.leftoffset, this.leftcolor);
+        this.drawLine(this.rightoffset, this.rightcolor); // TODO: Remove when right implemented
         WebTVAudioscope.leftAnalyser.getByteTimeDomainData(this.dataArray);
         this.ctx.strokeStyle = this.leftcolor;
         this.ctx.beginPath();
