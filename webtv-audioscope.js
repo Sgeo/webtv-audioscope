@@ -109,6 +109,10 @@
         for(let audioTag of audioTags) {
             let source = WebTVAudioscope.audioContext.createMediaElementSource(audioTag);
             source.connect(splitter);
+            audioTag.addEventListener("play", function() {
+                // Hopefully work around autoplay problems
+                WebTVAudioscope.audioContext.resume();
+            });
         }
 
         function drawAll() {
