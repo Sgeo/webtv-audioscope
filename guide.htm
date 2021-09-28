@@ -1,0 +1,135 @@
+<html><head><title>WebTV's audioscope</title><script type="text/javascript" src="webtv-audioscope.js"></script></head>
+<body bgcolor="black" text="silver"><audio data-webtv-audioscope-source></audio>
+<center>
+  <img src="http://web.archive.org/web/20021016134515id_/http://geocities.com/researchtriangle/8795/audioscopefinal.png" width="314" height="41"> 
+  <p>
+<font size="2">Click <a href="http://theoldnet.com/get?decode=false&scripts=false&timestamp=20021016134515&url=http://www.geocities.com/ResearchTriangle/2978/
+virtual_insanity.mid" nocolor=""><b>here</b></a> for music</font></p></center>
+<p>
+  </p><center>
+    <br>
+  </center>
+  The audioscope is a WebTV-only code which produces an on-screen "equalizer" 
+  that graphically displays any sound coming through your terminal (except TV 
+  sound in the WebPIP on the Plus; with PIP open, audioscopes go flat).
+<p><b><i>Note: As of the November 1999 serverside upgrade, audioscopes work only 
+  on webpages, no longer in e-mail.</i></b>
+</p><h3>Basic</h3>
+Here's the most basic audioscope:<p>
+</p><center>
+<webtv-audioscope>
+</webtv-audioscope></center><p>
+And here's the code:</p><p>
+<code><</code><code>audioscope></code></p><p>
+</p><h3>Attributes</h3>
+<h5>width</h5>
+You can set width with either a number of pixels or a percentage 
+of screen width:<p>
+</p><center>
+<webtv-audioscope width="300">
+</webtv-audioscope></center><p>
+The code:</p><p>
+<code><</code><code>audioscope width=300></code></p><p>
+
+</p><h5>height</h5>
+Height is set in number of pixels:<p>
+</p><center>
+<webtv-audioscope height="30" width="400">
+</webtv-audioscope></center><p>
+The code:</p><p>
+<code><</code><code>audioscope height=30 width=400></code></p><p>
+</p><h5>bgcolor</h5>
+The bgcolor attribute lets you make the background of the 
+audioscope a different color:<p>
+</p><center>
+<webtv-audioscope height="60" width="200" bgcolor="blue">
+</webtv-audioscope></center><p>
+The code:</p><p>
+<code><</code><code>audioscope height=60 width=200 
+bgcolor=blue></code></p><p>
+</p><h5>rightoffset and leftoffset</h5>
+rightoffset and leftoffset allow you to separate the right and 
+left channels graphically, usually you set them to a positive and 
+negative number of the same value:<p>
+</p><center>
+<webtv-audioscope height="60" width="200" bgcolor="blue" rightoffset="8" leftoffset="-8">
+</webtv-audioscope></center><p>
+The code:</p><p>
+<code><</code><code>audioscope height=60 width=200 bgcolor=blue 
+rightoffset=8 leftoffset=-8></code></p><p>
+</p><h5>rightcolor and leftcolor</h5>
+rightcolor and leftcolor let you choose the color of the 
+graphical display of the right and left audio channels:<p>
+</p><center>
+<webtv-audioscope height="60" width="200" bgcolor="#191919" rightoffset="8" leftoffset="-8" rightcolor="red" leftcolor="white">
+</webtv-audioscope></center><p>
+The code:</p><p>
+<code><</code><code>audioscope height=60 width=200 bgcolor=191919 
+rightoffset=8 leftoffset=-8 rightcolor=red 
+leftcolor=white></code></p><p>
+</p><h5>gain</h5>
+gain allows you to set the amount of vertical response to music 
+volume in the audioscope:
+<center>
+<webtv-audioscope height="60" width="200" bgcolor="#191919" rightoffset="8" leftoffset="-8" rightcolor="red" leftcolor="white" gain="5"></webtv-audioscope></center><p></p><center>
+</center>
+The code:<p>
+<code><</code><code>audioscope height=60 width=200 bgcolor=191919 
+rightoffset=8 leftoffset=-8 rightcolor=red leftcolor=white 
+gain=8></code></p><p>
+A gain of zero makes a different effect:</p><p>
+</p><center>
+<webtv-audioscope height="60" width="200" bgcolor="#191919" rightoffset="8" leftoffset="-8" rightcolor="red" leftcolor="white" gain="0"><p>
+</p></webtv-audioscope></center><p>
+Negative gain does something else (-70 is used in this 
+example):</p><p>
+</p><center>
+<webtv-audioscope height="60" width="200" bgcolor="#191919" rightoffset="8" leftoffset="-8" rightcolor="red" leftcolor="white" gain="-70"></webtv-audioscope></center><p></p><center>
+</center>
+And a gain of 10000 makes for another effect:<p>
+</p><center>
+<webtv-audioscope height="60" width="200" bgcolor="#191919" rightoffset="8" leftoffset="-8" rightcolor="red" leftcolor="white" gain="10000"><p>
+</p></webtv-audioscope></center><p>
+</p><h5>maxlevel</h5>
+maxlevel displays a floating horizontal bar indicating the 
+maximum volume over time:<p>
+</p><center>
+<webtv-audioscope height="60" width="200" bgcolor="#191919" rightoffset="8" leftoffset="-8" rightcolor="red" leftcolor="white" maxlevel="true">
+</webtv-audioscope></center><p>
+The code:</p><p>
+<code><</code>audioscope height=60 width=200 bgcolor=191919 
+rightoffset=8 leftoffset=-8 rightcolor=red leftcolor=white 
+maxlevel=true></p><p>
+</p><h5>border</h5>
+You can make a border around the audioscope (in fact it comes 
+with a very narrow border built in):<p>
+</p><center>
+<webtv-audioscope height="60" width="200" bgcolor="#191919" rightoffset="8" leftoffset="-8" rightcolor="red" leftcolor="white" border="10"><p>
+</p></webtv-audioscope></center><p>
+The code:</p><p>
+<code><</code>audioscope height=60 width=200 bgcolor=191919 
+rightoffset=8 leftoffset=-8 rightcolor=red leftcolor=white 
+border=10></p><p>
+
+</p><h3>In Closing</h3>
+Here ya go:<p>
+</p><center>
+<webtv-audioscope height="300" width="100" bgcolor="#100000" rightcolor="gold" leftcolor="orange" gain="-70" border="5"></webtv-audioscope></center><p></p><center>
+</center>
+The code:<p>
+<code><</code>audioscope height=300 width=100 bgcolor=100000 
+rightcolor=gold leftcolor=orange gain=-70 border=5></p><p>
+Have fun!</p><p>
+</p><center>
+  <spacer type="block" height="100" width="560"> <a href="http://theoldnet.com/get?decode=false&scripts=false&timestamp=20021016134515&url=http://geocities.com/researchtriangle/8795/index.html"><img src="http://web.archive.org/web/20021016134515id_/http://geocities.com/researchtriangle/8795/vargaspaulnetfinal.png" width="277" height="84" border="0"></a> 
+  <p>
+<font color="silver" size="2">
+...is brought to you by...
+  </font></p><p><font color="silver" size="2"> <a href="http://theoldnet.com/get?decode=false&scripts=false&timestamp=20021016134515&url=http://www.geocities.com/"><img src="http://web.archive.org/web/20021016134515id_/http://geocities.com/researchtriangle/8795/geoiconfinal.png" width="243" height="31" border="0"></a> 
+  </font></p><p><font color="silver" size="2">
+<font color="silver" size="2">
+get your free homepage today
+</font></font></p></spacer></center>
+<noscript><img src="http://visit.webhosting.yahoo.com/visit.gif?us1034775916" border=0 width=1 height=1></noscript>
+<img src="http://web.archive.org/web/20021016134515id_/http://geo.yahoo.com/serv?s=76001067&t=1034775916" alt="1" width="1" height="1">
+</body></html><!-- text below generated by server. PLEASE REMOVE -->
