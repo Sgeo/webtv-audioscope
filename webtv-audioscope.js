@@ -1,3 +1,7 @@
+function clamp(number, min, max) {
+    return Math.max(min, Math.min(number, max));
+}
+
 class WebTVAudioscope extends HTMLElement {
 
 
@@ -16,7 +20,9 @@ class WebTVAudioscope extends HTMLElement {
         this.leftcolor = this.getAttribute("leftcolor") || "#8ece10";
         this.rightcolor = this.getAttribute("rightcolor") || "#ce8e10";
         this.leftoffset = parseInt(this.getAttribute("leftoffset") ?? "0");
+        this.leftoffset = clamp(this.leftoffset, -this.canvas.height/2, this.canvas.height/2);
         this.rightoffset = parseInt(this.getAttribute("rightoffset") ?? "1");
+        this.rightoffset = clamp(this.rightoffset, -this.canvas.height/2, this.canvas.height/2);
         this.gain = parseInt(this.getAttribute("gain") ?? "1");
         //this.drawLine(this.leftoffset, this.leftcolor);
         //this.drawLine(this.rightoffset, this.rightcolor);
@@ -77,7 +83,7 @@ class WebTVAudioscope extends HTMLElement {
         let sliceWidth = this.canvas.width * 1.0 /  this.dataArray.length;
         let x = 0;
         for(let i = 0; i < this.dataArray.length; i++) {
-            let v = this.dataArray[i] / 256.0;
+            let v = this.dataArray[i] / 255.0;
             v = v * this.gain - this.gain / 2.0 + 1.0/2.0;
             let y = v * this.canvas.height + offset;
 
