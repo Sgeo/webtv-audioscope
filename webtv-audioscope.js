@@ -32,8 +32,14 @@ class WebTVAudioscope extends HTMLElement {
             WebTVAudioscope.leftAnalyser = WebTVAudioscope.audioContext.createAnalyser();
             WebTVAudioscope.rightAnalyser = WebTVAudioscope.audioContext.createAnalyser();
             let source = WebTVAudioscope.audioContext.createMediaElementSource(audioTag);
-            source.connect(WebTVAudioscope.leftAnalyser);
-            WebTVAudioscope.leftAnalyser.connect(WebTVAudioscope.audioContext.destination);
+            let splitter = WebTVAudioscope.audioContext.createChannelSplitter(2);
+            source.connect(splitter);
+            splitter.connect(WebTVAudioscope.leftAnalyser, 0);
+            splitter.connect(WebTVAudioscope.rightAnalyser, 1);
+            let merger = WebTVAudioscope.audioContext.createChannelMerger(2);
+            WebTVAudioscope.leftAnalyser.connect(merger, 0, 0);
+            WebTVAudioscope.rightAnalyser.connect(merger, 0, 1);
+            merger.connect(WebTVAudioscope.audioContext.destination);
         }
 
         this.dataArray = new Uint8Array(WebTVAudioscope.leftAnalyser.frequencyBinCount);
@@ -58,16 +64,22 @@ class WebTVAudioscope extends HTMLElement {
         requestAnimationFrame(this.draw.bind(this));
         this.paintBackground();
         //this.drawLine(this.leftoffset, this.leftcolor);
-        this.drawLine(this.rightoffset, this.rightcolor); // TODO: Remove when right implemented
-        WebTVAudioscope.leftAnalyser.getByteTimeDomainData(this.dataArray);
-        this.ctx.strokeStyle = this.leftcolor;
+        //this.drawLine(this.rightoffset, this.rightcolor); // TODO: Remove when right implemented
+        this.drawAudioLine(WebTVAudioscope.leftAnalyser, this.leftoffset, this.leftcolor);
+        this.drawAudioLine(WebTVAudioscope.rightAnalyser, this.rightoffset, this.rightcolor);
+
+    }
+
+    drawAudioLine(analyser, offset, color) {
+        analyser.getByteTimeDomainData(this.dataArray);
+        this.ctx.strokeStyle = color;
         this.ctx.beginPath();
         let sliceWidth = this.canvas.width * 1.0 /  this.dataArray.length;
         let x = 0;
         for(let i = 0; i < this.dataArray.length; i++) {
             let v = this.dataArray[i] / 256.0;
             v = v * this.gain - this.gain / 2.0 + 1.0/2.0;
-            let y = v * this.canvas.height;
+            let y = v * this.canvas.height + offset;
 
             if(i === 0) {
                 this.ctx.moveTo(x, y);
