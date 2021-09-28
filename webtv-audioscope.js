@@ -25,6 +25,8 @@ class WebTVAudioscope extends HTMLElement {
         this.rightoffset = parseInt(this.getAttribute("rightoffset") ?? "1");
         this.rightoffset = clamp(this.rightoffset, -bound, bound);
         this.gain = parseInt(this.getAttribute("gain") ?? "1");
+        this.canvas.style.borderWidth = this.getAttribute("border") ?? "0";
+        this.canvas.style.borderStyle = "inset";
         //this.drawLine(this.leftoffset, this.leftcolor);
         //this.drawLine(this.rightoffset, this.rightcolor);
 
@@ -95,7 +97,7 @@ class WebTVAudioscope extends HTMLElement {
             }
             x += sliceWidth;
         }
-        this.ctx.lineTo(this.canvas.width, this.canvas.height/2); // WHy this default at the end?
+        //this.ctx.lineTo(this.canvas.width, this.canvas.height/2); // WHy this default at the end?
         this.ctx.stroke();
     }
 
