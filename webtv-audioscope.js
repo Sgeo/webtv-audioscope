@@ -15,6 +15,7 @@
             const shadow = this.attachShadow({mode: "open"});
             this.canvas = document.createElement("canvas");
             this.ctx = this.canvas.getContext("2d");
+            this.ctx.imageSmoothingEnabled = false;
             this.canvas.width = this.getAttribute("width") || "100";
             this.canvas.height = this.getAttribute("height") || "80";
             shadow.append(this.canvas);
@@ -67,12 +68,13 @@
         drawAudioLine(data, offset, color) {
             // Oscilloscope code stolen from https://developer.mozilla.org/en-US/docs/Web/API/AnalyserNode
             this.ctx.strokeStyle = color;
+            this.ctx.lineWidth = 1; // TODO: What should I use here?
             this.ctx.beginPath();
             let sliceWidth = this.canvas.width * 1.0 /  data.length;
             let x = 0;
             for(let i = 0; i < data.length; i++) {
                 let v = this.gain * data[i];
-                let y = v * this.canvas.height + this.canvas.height/2 + offset; // Stirrer disappears if I Math.floor(this.canvas.height/2), why?
+                let y = v * this.canvas.height + this.canvas.height/2 + offset; // Rounding causes stirrer to disappear unless lineWidth>1
                 if(i === 0) {
                     this.ctx.moveTo(x, y);
                 } else {
