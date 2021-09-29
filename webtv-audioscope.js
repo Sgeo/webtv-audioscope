@@ -56,29 +56,23 @@
             this.ctx.stroke();
         }
 
-        draw(leftAnalyser, rightAnalyser) {
+        draw(leftData, rightData) {
             
             this.paintBackground();
-            if(!this.dataArray) {
-                this.dataArray = new Uint8Array(leftAnalyser.frequencyBinCount);
-            }
-            this.drawAudioLine(leftAnalyser, this.leftoffset, this.leftcolor);
-            this.drawAudioLine(rightAnalyser, this.rightoffset, this.rightcolor);
+            this.drawAudioLine(leftData, this.leftoffset, this.leftcolor);
+            this.drawAudioLine(rightData, this.rightoffset, this.rightcolor);
 
         }
 
-        drawAudioLine(analyser, offset, color) {
+        drawAudioLine(data, offset, color) {
             // Oscilloscope code stolen from https://developer.mozilla.org/en-US/docs/Web/API/AnalyserNode
-            analyser.getByteTimeDomainData(this.dataArray);
             this.ctx.strokeStyle = color;
             this.ctx.beginPath();
-            let sliceWidth = this.canvas.width * 1.0 /  this.dataArray.length;
+            let sliceWidth = this.canvas.width * 1.0 /  data.length;
             let x = 0;
-            for(let i = 0; i < this.dataArray.length; i++) {
-                let v = this.dataArray[i] / 256.0;
-                v = v * this.gain - this.gain / 2.0 + 1.0/2.0;
-                let y = v * this.canvas.height + offset;
-
+            for(let i = 0; i < data.length; i++) {
+                let v = this.gain * data[i];
+                let y = v * this.canvas.height + this.canvas.height/2 + offset; // Stirrer disappears if I Math.floor(this.canvas.height/2), why?
                 if(i === 0) {
                     this.ctx.moveTo(x, y);
                 } else {
@@ -115,10 +109,15 @@
             });
         }
 
+        WebTVAudioscope.leftData = new Float32Array(WebTVAudioscope.leftAnalyser.fftSize);
+        WebTVAudioscope.rightData = new Float32Array(WebTVAudioscope.rightAnalyser.fftSize);
+
         function drawAll() {
             requestAnimationFrame(drawAll);
+            WebTVAudioscope.leftAnalyser.getFloatTimeDomainData(WebTVAudioscope.leftData);
+            WebTVAudioscope.rightAnalyser.getFloatTimeDomainData(WebTVAudioscope.rightData);
             for(let audioscope of WebTVAudioscope.audioscopes) {
-                audioscope.draw(WebTVAudioscope.leftAnalyser, WebTVAudioscope.rightAnalyser);
+                audioscope.draw(WebTVAudioscope.leftData, WebTVAudioscope.rightData);
             }
         }
         drawAll();
