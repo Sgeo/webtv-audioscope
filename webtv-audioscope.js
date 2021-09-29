@@ -108,6 +108,10 @@
         WebTVAudioscope.audioContext = new AudioContext();
         WebTVAudioscope.leftAnalyser = WebTVAudioscope.audioContext.createAnalyser();
         WebTVAudioscope.rightAnalyser = WebTVAudioscope.audioContext.createAnalyser();
+        [WebTVAudioscope.leftAnalyser, WebTVAudioscope.rightAnalyser].forEach(analyser => {
+            analyser.fftSize = 128;
+            analyser.smoothingTimeConstant = 0.0;
+        });
         let splitter = WebTVAudioscope.audioContext.createChannelSplitter(2);
         splitter.connect(WebTVAudioscope.leftAnalyser, 0);
         splitter.connect(WebTVAudioscope.rightAnalyser, 1);
