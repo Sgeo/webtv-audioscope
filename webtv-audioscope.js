@@ -4,6 +4,27 @@
         return Math.max(min, Math.min(number, max));
     }
 
+    function drawWithAlpha(ctx, callback) {
+        ctx.globalAlpha = 1.0;
+        callback(function moveTo(x, y) {
+            ctx.moveTo(x, y);
+        }, function lineTo(x, y) {
+            ctx.lineTo(x, y);
+        });
+        ctx.globalAlpha = 0.5;
+        callback(function moveTo(x, y) {
+            ctx.moveTo(x, y-1);
+        }, function lineTo(x, y) {
+            ctx.lineTo(x, y-1);
+        });
+        callback(function moveTo(x, y) {
+            ctx.moveTo(x, y+1);
+        }, function lineTo(x, y) {
+            ctx.lineTo(x, y+1);
+        });
+        ctx.globalAlpha = 1.0;
+    }
+
     class WebTVAudioscope extends HTMLElement {
 
         static audioscopes = new Set();
@@ -72,18 +93,21 @@
             this.ctx.beginPath();
             let sliceWidth = this.canvas.width * 1.0 /  data.length;
             let x = 0;
-            for(let i = 0; i < data.length; i++) {
-                let v = this.gain * data[i];
-                let y = v * this.canvas.height + this.canvas.height/2 + offset; // Rounding causes stirrer to disappear unless lineWidth>1
-                if(i === 0) {
-                    this.ctx.moveTo(x, y);
-                } else {
-                    this.ctx.lineTo(x, y);
+            drawWithAlpha(this.ctx, (moveTo, lineTo) => {
+                for(let i = 0; i < data.length; i++) {
+                    let v = this.gain * data[i];
+                    let y = v * this.canvas.height + this.canvas.height/2 + offset; // Rounding causes stirrer to disappear unless lineWidth>1
+                    if(i === 0) {
+                        moveTo(x, y);
+                    } else {
+                        lineTo(x, y);
+                    }
+                    x += sliceWidth;
                 }
-                x += sliceWidth;
-            }
+                this.ctx.stroke();
+            });
             //this.ctx.lineTo(this.canvas.width, this.canvas.height/2); // WHy this default at the end?
-            this.ctx.stroke();
+            
         }
 
 
