@@ -90,10 +90,10 @@
             // Oscilloscope code stolen from https://developer.mozilla.org/en-US/docs/Web/API/AnalyserNode
             this.ctx.strokeStyle = color;
             this.ctx.lineWidth = 1; // TODO: What should I use here?
-            this.ctx.beginPath();
             let sliceWidth = this.canvas.width * 1.0 /  data.length;
             let x = 0;
             drawWithAlpha(this.ctx, (moveTo, lineTo) => {
+                this.ctx.beginPath();
                 for(let i = 0; i < data.length; i++) {
                     let v = this.gain * data[i];
                     let y = v * this.canvas.height + this.canvas.height/2 + offset; // Rounding causes stirrer to disappear unless lineWidth>1
