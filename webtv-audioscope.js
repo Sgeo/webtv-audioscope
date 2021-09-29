@@ -40,7 +40,7 @@
             this.canvas.width = this.getAttribute("width") || "100";
             this.canvas.height = this.getAttribute("height") || "80";
             shadow.append(this.canvas);
-            this.bgcolor = this.getAttribute("bgcolor") || "#868686";
+            this.bgcolor = this.getAttribute("bgcolor") || "#7B7B7B";
             this.paintBackground();
             this.leftcolor = this.getAttribute("leftcolor") || "#8ece10";
             this.rightcolor = this.getAttribute("rightcolor") || "#ce8e10";
