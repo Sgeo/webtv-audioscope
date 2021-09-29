@@ -46,9 +46,7 @@
             this.rightcolor = this.getAttribute("rightcolor") || "#ce8e10";
             this.leftoffset = parseInt(this.getAttribute("leftoffset") ?? "0");
             let bound = Math.floor(this.canvas.height/2.0);
-            this.leftoffset = clamp(this.leftoffset, -bound, bound);
             this.rightoffset = parseInt(this.getAttribute("rightoffset") ?? "1");
-            this.rightoffset = clamp(this.rightoffset, -bound, bound);
             this.gain = parseInt(this.getAttribute("gain") ?? "1");
             this.canvas.style.borderWidth = this.getAttribute("border") ?? "0";
             this.canvas.style.borderStyle = "inset";
@@ -88,24 +86,17 @@
 
         drawAudioLine(data, offset, color) {
             // Oscilloscope code stolen from https://developer.mozilla.org/en-US/docs/Web/API/AnalyserNode
-            this.ctx.strokeStyle = color;
+            this.ctx.fillStyle = color;
             this.ctx.lineWidth = 1; // TODO: What should I use here?
             let sliceWidth = this.canvas.width * 1.0 /  data.length;
             let x = 0;
-            drawWithAlpha(this.ctx, (moveTo, lineTo) => {
-                this.ctx.beginPath();
-                for(let i = 0; i < data.length; i++) {
-                    let v = this.gain * data[i];
-                    let y = v * this.canvas.height + this.canvas.height/2 + offset; // Rounding causes stirrer to disappear unless lineWidth>1
-                    if(i === 0) {
-                        moveTo(x, y);
-                    } else {
-                        lineTo(x, y);
-                    }
-                    x += sliceWidth;
-                }
-                this.ctx.stroke();
-            });
+            for(let i = 0; i < data.length; i++) {
+                let v = this.gain * data[i];
+                let y = -v * this.canvas.height /2 + Math.floor(this.canvas.height/2) + offset; // Rounding causes stirrer to disappear unless lineWidth>1. -v because y=0 is top
+                y = clamp(y, 0, this.canvas.height - 1);
+                this.ctx.fillRect(x, y, 1, 1);
+                x += sliceWidth;
+            }
             //this.ctx.lineTo(this.canvas.width, this.canvas.height/2); // WHy this default at the end?
             
         }
