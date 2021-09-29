@@ -50,6 +50,8 @@
             this.gain = parseInt(this.getAttribute("gain") ?? "1");
             this.canvas.style.borderWidth = this.getAttribute("border") ?? "0";
             this.canvas.style.borderStyle = "inset";
+            //this.canvas.style.borderStyle = "solid";
+            //this.canvas.style.borderColor = "#10101094 #7B7B7B9C #7B7B7B9C #10101094";
             //this.drawLine(this.leftoffset, this.leftcolor);
             //this.drawLine(this.rightoffset, this.rightcolor);
 
@@ -87,14 +89,13 @@
         drawAudioLine(data, offset, color) {
             // Oscilloscope code stolen from https://developer.mozilla.org/en-US/docs/Web/API/AnalyserNode
             this.ctx.fillStyle = color;
-            this.ctx.lineWidth = 1; // TODO: What should I use here?
             let sliceWidth = this.canvas.width * 1.0 /  data.length;
             let x = 0;
             for(let i = 0; i < data.length; i++) {
                 let v = this.gain * data[i];
                 let y = -v * this.canvas.height /2 + Math.floor(this.canvas.height/2) + offset; // Rounding causes stirrer to disappear unless lineWidth>1. -v because y=0 is top
                 y = clamp(y, 0, this.canvas.height - 1);
-                this.ctx.fillRect(x, y, 1, 1);
+                this.ctx.fillRect(x, y, 1, 2);
                 x += sliceWidth;
             }
             //this.ctx.lineTo(this.canvas.width, this.canvas.height/2); // WHy this default at the end?
