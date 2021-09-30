@@ -5,24 +5,11 @@
     }
 
     function drawWithAlpha(ctx, callback) {
-        ctx.globalAlpha = 1.0;
-        callback(function moveTo(x, y) {
-            ctx.moveTo(x, y);
-        }, function lineTo(x, y) {
-            ctx.lineTo(x, y);
-        });
+        callback(0);
         ctx.globalAlpha = 0.5;
-        callback(function moveTo(x, y) {
-            ctx.moveTo(x, y-1);
-        }, function lineTo(x, y) {
-            ctx.lineTo(x, y-1);
-        });
-        callback(function moveTo(x, y) {
-            ctx.moveTo(x, y+1);
-        }, function lineTo(x, y) {
-            ctx.lineTo(x, y+1);
-        });
-        ctx.globalAlpha = 1.0;
+        callback(-1);
+        callback(1);
+        ctx.globalApha = 1.0;
     }
 
     class WebTVAudioscope extends HTMLElement {
@@ -88,14 +75,17 @@
         drawAudioLine(data, offset, color) {
             // Oscilloscope code stolen from https://developer.mozilla.org/en-US/docs/Web/API/AnalyserNode
             this.ctx.fillStyle = color;
-            let sliceWidth = this.canvas.width * 1.0 /  data.length;
-            let x = 0;
-            for(let i = 0; i < data.length; i++) {
-                let v = this.gain * data[i];
+            let sliceWidth = data.length / this.canvas.width;
+            for(let x = 0; x < this.canvas.width; x++) {
+                let slice = data.subarray(x * sliceWidth, (x+1) * sliceWidth);
+                let v = this.gain * slice.reduce((prev, cur) => prev+cur, 0.0)/slice.length;
                 let y = -v * this.canvas.height /2 + Math.floor(this.canvas.height/2) + offset; // Rounding causes stirrer to disappear unless lineWidth>1. -v because y=0 is top
                 y = clamp(y, 0, this.canvas.height - 1);
-                this.ctx.fillRect(x, y, 1, 2);
-                x += sliceWidth;
+                this.ctx.fillRect(x, y, 1, 1);
+                this.ctx.globalAlpha = 0.5;
+                this.ctx.fillRect(x, y-1, 1, 1);
+                this.ctx.fillRect(x, y+1, 1, 1);
+                this.ctx.globalAlpha = 1.0;
             }
             //this.ctx.lineTo(this.canvas.width, this.canvas.height/2); // WHy this default at the end?
             
@@ -109,7 +99,7 @@
         WebTVAudioscope.leftAnalyser = WebTVAudioscope.audioContext.createAnalyser();
         WebTVAudioscope.rightAnalyser = WebTVAudioscope.audioContext.createAnalyser();
         [WebTVAudioscope.leftAnalyser, WebTVAudioscope.rightAnalyser].forEach(analyser => {
-            //analyser.fftSize = 1024;
+            analyser.fftSize = 512;
             analyser.smoothingTimeConstant = 0.0;
         });
         let splitter = WebTVAudioscope.audioContext.createChannelSplitter(2);
