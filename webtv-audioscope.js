@@ -49,9 +49,8 @@
             this.rightoffset = parseInt(this.getAttribute("rightoffset") ?? "1");
             this.gain = parseInt(this.getAttribute("gain") ?? "1");
             this.canvas.style.borderWidth = this.getAttribute("border") ?? "0";
-            this.canvas.style.borderStyle = "inset";
-            //this.canvas.style.borderStyle = "solid";
-            //this.canvas.style.borderColor = "#10101094 #7B7B7B9C #7B7B7B9C #10101094";
+            this.canvas.style.borderStyle = "solid";
+            this.canvas.style.borderColor = "#1C1C1C94 #C9C9C99C #C9C9C99C #1C1C1C94";
             //this.drawLine(this.leftoffset, this.leftcolor);
             //this.drawLine(this.rightoffset, this.rightcolor);
 
