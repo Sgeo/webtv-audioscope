@@ -4,6 +4,10 @@
         return Math.max(min, Math.min(number, max));
     }
 
+    function fixColor(colorstr) {
+        return colorstr.replace(/^[^#][0-9a-fA-F]+$/, "#$&");
+    }
+
     function drawWithAlpha(ctx, callback) {
         callback(0);
         ctx.globalAlpha = 0.5;
@@ -27,10 +31,10 @@
             this.canvas.width = this.getAttribute("width") || "100";
             this.canvas.height = this.getAttribute("height") || "80";
             shadow.append(this.canvas);
-            this.bgcolor = this.getAttribute("bgcolor") || "#7B7B7B";
+            this.bgcolor = fixColor(this.getAttribute("bgcolor") || "#7B7B7B");
             this.paintBackground();
-            this.leftcolor = this.getAttribute("leftcolor") || "#8ece10";
-            this.rightcolor = this.getAttribute("rightcolor") || "#ce8e10";
+            this.leftcolor = fixColor(this.getAttribute("leftcolor") || "#8ece10");
+            this.rightcolor = fixColor(this.getAttribute("rightcolor") || "#ce8e10");
             this.leftoffset = parseInt(this.getAttribute("leftoffset") ?? "0");
             let bound = Math.floor(this.canvas.height/2.0);
             this.rightoffset = parseInt(this.getAttribute("rightoffset") ?? "1");
