@@ -13,5 +13,4 @@ This HTML5 custom element attempts to replicate WebTV's exclusive `<audioscope>`
 
 ## Limitations
 
-* `gain=0` is currently not properly supported.
 * Colors may not be 100% accurate, especially when transparency is involved (borders and the pixels above and below the audioscope lines)

@@ -16,6 +16,24 @@
         ctx.globalApha = 1.0;
     }
 
+    function gain0bars(height) {
+        // Describes the vertical start and size of the bars used when gain=0
+        // Breaks down a bit at very small heights (3 or less?)
+        let left_center = Math.floor((height-1)/3);
+        let right_center = Math.ceil(2*(height-1)/3);
+        let center_to_edge = Math.floor((height-1)/8) + 1;
+        return ({
+            left: {
+                start: left_center - center_to_edge,
+                size: center_to_edge * 2
+            },
+            right: {
+                start: right_center - center_to_edge,
+                size: center_to_edge * 2
+            }
+        });
+    }
+
     class WebTVAudioscope extends HTMLElement {
 
         static audioscopes = new Set();
@@ -68,11 +86,21 @@
             this.ctx.stroke();
         }
 
-        draw(leftData, rightData) {
+        draw(leftData, rightData, leftVolume, rightVolume) {
             
             this.paintBackground();
-            this.drawAudioLine(leftData, this.leftoffset, this.leftcolor);
-            this.drawAudioLine(rightData, this.rightoffset, this.rightcolor);
+            if(this.gain !== 0) {
+                this.drawAudioLine(leftData, this.leftoffset, this.leftcolor);
+                this.drawAudioLine(rightData, this.rightoffset, this.rightcolor);
+            } else {
+                this.drawVolumeBar(leftVolume, gain0bars(this.canvas.height).left, this.leftcolor);
+                this.drawVolumeBar(rightVolume, gain0bars(this.canvas.height).right, this.rightcolor);
+                let horizontal_segment = Math.floor(this.canvas.width/20)*2;
+                this.ctx.fillStyle = this.bgcolor;
+                for(let x = 0; x < this.canvas.width; x+=horizontal_segment) {
+                    this.ctx.fillRect(x, 0, 1, this.canvas.height);
+                }
+            }
 
         }
 
@@ -93,6 +121,11 @@
             }
             //this.ctx.lineTo(this.canvas.width, this.canvas.height/2); // WHy this default at the end?
             
+        }
+
+        drawVolumeBar(volume, bars, color) {
+            this.ctx.fillStyle = color;
+            this.ctx.fillRect(0, bars.start, this.canvas.width * volume, bars.size);
         }
 
 
@@ -131,8 +164,10 @@
             requestAnimationFrame(drawAll);
             WebTVAudioscope.leftAnalyser.getFloatTimeDomainData(WebTVAudioscope.leftData);
             WebTVAudioscope.rightAnalyser.getFloatTimeDomainData(WebTVAudioscope.rightData);
+            let leftVolume = Math.sqrt(WebTVAudioscope.leftData.reduce((prev, cur) => {return prev + cur*cur}, 0) / WebTVAudioscope.leftData.length);
+            let rightVolume = Math.sqrt(WebTVAudioscope.leftData.reduce((prev, cur) => {return prev + cur*cur}, 0) / WebTVAudioscope.leftData.length);
             for(let audioscope of WebTVAudioscope.audioscopes) {
-                audioscope.draw(WebTVAudioscope.leftData, WebTVAudioscope.rightData);
+                audioscope.draw(WebTVAudioscope.leftData, WebTVAudioscope.rightData, leftVolume, rightVolume);
             }
         }
         drawAll();

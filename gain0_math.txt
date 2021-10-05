@@ -1,0 +1,22 @@
+centers of bars: floor((height-1)/3), (height-1) - floor((height-1)/3)
+plusminus: floor((height-1)/8)+1
+
+25
+
+centers: 8, 24-8=16
+
+8-4,8+4  16-4,16+4
+[4,12) [12,20)
+
+20
+
+centers: floor(19/3) = 6, 19-6 = 13
+plusminus: floor(19/8)+1 = 3
+
+[3,9) [10, 16)
+
+counting down from top.
+
+left bar is top-most.
+
+right draws over left may explain some discrepencies.
