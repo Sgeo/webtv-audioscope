@@ -5,7 +5,7 @@
     }
 
     function fixColor(colorstr) {
-        return colorstr.replace(/^[^#][0-9a-fA-F]+$/, "#$&");
+        return colorstr.replace(/^[0-9a-fA-F]+$/, "#$&");
     }
 
     function drawWithAlpha(ctx, callback) {
