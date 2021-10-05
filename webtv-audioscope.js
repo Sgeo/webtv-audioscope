@@ -165,7 +165,7 @@
             WebTVAudioscope.leftAnalyser.getFloatTimeDomainData(WebTVAudioscope.leftData);
             WebTVAudioscope.rightAnalyser.getFloatTimeDomainData(WebTVAudioscope.rightData);
             let leftVolume = Math.sqrt(WebTVAudioscope.leftData.reduce((prev, cur) => {return prev + cur*cur}, 0) / WebTVAudioscope.leftData.length);
-            let rightVolume = Math.sqrt(WebTVAudioscope.leftData.reduce((prev, cur) => {return prev + cur*cur}, 0) / WebTVAudioscope.leftData.length);
+            let rightVolume = Math.sqrt(WebTVAudioscope.rightData.reduce((prev, cur) => {return prev + cur*cur}, 0) / WebTVAudioscope.rightData.length);
             for(let audioscope of WebTVAudioscope.audioscopes) {
                 audioscope.draw(WebTVAudioscope.leftData, WebTVAudioscope.rightData, leftVolume, rightVolume);
             }
