@@ -13,7 +13,7 @@ This HTML5 custom element attempts to replicate WebTV's exclusive `<audioscope>`
 
 ## Demos
 
-* [mechtild's Bach Toccata Fugue Wineglass](https://sgeo.github.io/webtv-audioscope/scopeglass-bach.html) [original](http://wtv-zone.com/mechtild/scopeglass-bach.html)
+* [mechtild's Bach Toccata Fugue Wineglass](https://sgeo.github.io/webtv-audioscope/scopeglass-bach.html) ([original](http://wtv-zone.com/mechtild/scopeglass-bach.html))
 
 ## Limitations
 
