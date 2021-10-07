@@ -21,3 +21,4 @@ This HTML5 custom element attempts to replicate WebTV's exclusive `<audioscope>`
 * Currently unsupported attributes:
     * align
     * maxlevel
+* width and height can currently only be set to pixel values
