@@ -46,9 +46,12 @@
             this.canvas = document.createElement("canvas");
             this.ctx = this.canvas.getContext("2d");
             this.ctx.imageSmoothingEnabled = false;
-            this.canvas.width = this.getAttribute("width") || "100";
-            this.canvas.height = this.getAttribute("height") || "80";
+            this.canvas.style.width = this.getAttribute("width") || "100px";
+            this.canvas.style.height = this.getAttribute("height") || "80px";
             shadow.append(this.canvas);
+            let computedStyle = getComputedStyle(this.canvas);
+            this.canvas.width = computedStyle.width.replace(/px$/, "");
+            this.canvas.height = computedStyle.height.replace(/px$/, "");
             this.bgcolor = fixColor(this.getAttribute("bgcolor") || "#7B7B7B");
             this.paintBackground();
             this.leftcolor = fixColor(this.getAttribute("leftcolor") || "#8ece10");
