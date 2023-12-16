@@ -13,7 +13,7 @@
         ctx.globalAlpha = 0.5;
         callback(-1);
         callback(1);
-        ctx.globalApha = 1.0;
+        ctx.globalAlpha = 1.0;
     }
 
     function gain0bars(height) {
@@ -44,6 +44,12 @@
         connectedCallback() {
             const shadow = this.attachShadow({mode: "open"});
             this.canvas = document.createElement("canvas");
+            const canvasClass = this.getAttribute("canvasClass");
+            const canvasID = this.getAttribute("canvasID");
+            const canvasStyle = this.getAttribute("canvasStyle");
+            if (canvasClass) { this.canvas.classList.add(canvasClass); }
+            if (canvasID) { this.canvas.id = canvasID; }
+            if (canvasStyle) { this.canvas.style.cssText = canvasStyle; }
             this.ctx = this.canvas.getContext("2d");
             this.ctx.imageSmoothingEnabled = false;
             this.canvas.style.width = this.getAttribute("width") || "100px";
@@ -159,6 +165,40 @@
                 WebTVAudioscope.audioContext.resume();
             });
         }
+        // Attempt at getting audio within iframes to work with the audioscope
+        function handleAudioTagsInIframe(iframe) {
+            try {
+                if(!iframe.contentDocument) {
+                    console.warn("Cannot access cross-origin iframe content.");
+                    return;
+                }
+                let audioTagsIframe = iframe.contentDocument.querySelectorAll("audio");
+                for(let audioTag of audioTagsIframe) {
+                    let source;
+                    try {
+                        source = WebTVAudioscope.audioContext.createMediaElementSource(audioTag);
+                    } catch (error) {
+                        console.error("Error creating MediaElementSource:", error);
+                        continue;
+                    }
+                    source.connect(splitter);
+                    audioTag.addEventListener("play", function() {
+                        WebTVAudioscope.audioContext.resume();
+                    });
+                }
+            } catch(error) {
+                console.error("Couldn't add event listeners. Error: " + error);
+            }
+        }
+        function scanForAudioInIframes() {
+            try {
+                let iframes = document.querySelectorAll("iframe");
+                for(let iframe of iframes) {
+                    iframe.addEventListener("load", function() { handleAudioTagsInIframe(iframe); });
+                }
+            } catch(error) { console.error("Couldn't find iframes. Error: " + error); }
+        }
+        scanForAudioInIframes();
 
         WebTVAudioscope.leftData = new Float32Array(WebTVAudioscope.leftAnalyser.fftSize);
         WebTVAudioscope.rightData = new Float32Array(WebTVAudioscope.rightAnalyser.fftSize);
